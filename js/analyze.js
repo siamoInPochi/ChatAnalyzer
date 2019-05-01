@@ -4,15 +4,15 @@
 // lowercase and adding a "_" to the start e.g. "<Media" -> "_<media"
 // ATTENTION: These strings might have some weird invisible space character between "<" and "media" !!!!
 // ATTENTION: BE SURE TO COPY AND PASTE FROM YOUR CHAT LOG !!!!
-var str4Pic = ["_<‎bild","_<‎media", "_<‎picture", "<‎attached>"];
+var str4Pic = ["_ ‎immagine omessa", "_‎immagine"]; //"_<‎bild","_<‎media", "_<‎picture", "<‎attached>", ];
 
 // If you notice that your audio cont = 0 please add the identifier of your language in
 // ATTENTION: BE SURE TO COPY AND PASTE FROM YOUR CHAT LOG !!!!
-var str4Audio = ["_<‎audio"];
+var str4Audio = ["_audio","_ audio", "_audio omesso", "_ omesso", "_omesso"];
 
 // If you notice words that are not part of your chat (i.g. identifiers) of your language in
 // ATTENTION: PLEASE BE SURE TO COPY AND PASTE FROM YOUR CHAT LOG !!!!
-var unwantedWords = ["_","_weggelassen>", "_ommited>", "omesso>"];
+var unwantedWords = ["_","_weggelassen>", "_ommited>"];// "_omessa", "_omesso", "_ omessa", "_ omesso", "_ ", "_"];
 
 /// ----------------------------- \ GENERAL Config END /--------------------------------
 
@@ -770,7 +770,7 @@ function getMostUsedWords(messages) {
     for (var k = 0; k < str4Audio.length; k++) {
       if (mostUsed[j][0] == str4Audio[k]) {
         sentAudioIndex = j;
-        sentAudioCount = mostUsed[j][1];
+        sentAudioCount += mostUsed[j][1];
         break;
       }
     }
