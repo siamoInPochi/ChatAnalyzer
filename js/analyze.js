@@ -4,7 +4,7 @@
 // lowercase and adding a "_" to the start e.g. "<Media" -> "_<media"
 // ATTENTION: These strings might have some weird invisible space character between "<" and "media" !!!!
 // ATTENTION: BE SURE TO COPY AND PASTE FROM YOUR CHAT LOG !!!!
-var str4Pic = ["_ ‎immagine omessa", "_‎immagine"]; //"_<‎bild","_<‎media", "_<‎picture", "<‎attached>", ];
+var str4Pic = ["_<Media","_ <Media","_ < Media", "_ ‎immagine omessa", "_‎immagine"]; //"_<‎bild","_<‎media", "_<‎picture", "<‎attached>", ];
 
 // If you notice that your audio cont = 0 please add the identifier of your language in
 // ATTENTION: BE SURE TO COPY AND PASTE FROM YOUR CHAT LOG !!!!
@@ -12,8 +12,9 @@ var str4Audio = ["_audio","_ audio", "_audio omesso", "_ omesso", "_omesso"];
 
 // If you notice words that are not part of your chat (i.g. identifiers) of your language in
 // ATTENTION: PLEASE BE SURE TO COPY AND PASTE FROM YOUR CHAT LOG !!!!
-var unwantedWords = ["_","_weggelassen>", "_ommited>"];// "_omessa", "_omesso", "_ omessa", "_ omesso", "_ ", "_"];
+var unwantedWords = ["_","_weggelassen>", "_ommited>", "_omessa", "_omesso"];// "_omessa", "_omesso", "_ omessa", "_ omesso", "_ ", "_"];
 
+var minimum_length = 4;
 /// ----------------------------- \ GENERAL Config END /--------------------------------
 
 // TODO: add group support (make carousell for groups)
@@ -787,7 +788,9 @@ function getMostUsedWords(messages) {
         indexToDel[id] = j;
         id++;
       }
+	 
     }
+	
   }
   id = 0;
 
@@ -887,8 +890,32 @@ function removeStopwords(lan) {
 
   // Filter words
   var Stopwords = stopwords[lan];
+  //console.log(Stopwords);
   // save words in new variable
   var filteredWords = $.extend(true,{},wordsByUsage);
+    console.log(filteredWords);
+
+ var delIndex1 = [];
+ 
+//for(i = 0; i<st.length; i++){
+//document.write(str[i]);
+
+ //Stopwords[i] = st[i].replace(/(\b([a-z\u00C0-\u017E]{1,3})\b([^a-z\u00C0-\u017E]|$))/gi,'').split();
+ for (var j = 0; j < Stopwords.length; j++) {
+
+      if (Stopwords[j].length < 5){
+//console.log(Stopwords[j]);
+        delIndex1[l] = j;
+        l++;
+      }
+
+	  
+    }
+    for (var j = 0; j < delIndex1.length; j++) {
+      Stopwords[i].splice(delIndex1[j]-j,1);
+    }
+
+
 
   // for all inputs
   for (var i = 0; i < 2; i++) {
@@ -898,10 +925,14 @@ function removeStopwords(lan) {
     var l = 0;
     for (var j = 0; j < filteredWords[i].length; j++) {
 
-      if (Stopwords.indexOf(filteredWords[i][j][0].substring(1)) > -1) {
+      if ((Stopwords.indexOf(filteredWords[i][j][0].substring(1)) > -1)||(filteredWords[i][j][0].substring(1).length <= minimum_length)){
+		  		console.log((filteredWords[i][j][0]).substring(1));
+
         delIndex[l] = j;
         l++;
       }
+
+	  
     }
     for (var j = 0; j < delIndex.length; j++) {
       filteredWords[i].splice(delIndex[j]-j,1);
@@ -924,8 +955,8 @@ function removeStopwords(lan) {
     div.innerHTML = mostUsedHTML;
 
   }
-
 }
+
 
 function escapeHTML(text) {
   var map = {
